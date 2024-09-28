@@ -5,6 +5,9 @@ module.exports = {
   mode: "development",
   devServer: {
     port: 4200,
+    headers: {
+      "Access-Control-Allow-Origin": "*", // Permitir todos los orígenes
+    },
   },
   module: {
     rules: [
@@ -37,7 +40,15 @@ module.exports = {
       name: "hostApp",
       // filename: "remoteEntry.js",
       remotes: {
-        remoteApp: "remoteApp@http://localhost:8083/remoteEntry.js",
+        components: "reactRemote@http://localhost:8080/remoteEntry.js",
+      },
+      shared: {
+        // Paquetes compartidos (ej: Angular, librerías de UI)
+        '@angular/core': { singleton: true, strictVersion: true },
+        '@angular/common': { singleton: true, strictVersion: true },
+        '@angular/router': { singleton: true, strictVersion: true },
+        react: { singleton: true, eager: true, requiredVersion: '18.2.0' },
+        'react-dom': { singleton: true, eager: true, requiredVersion: '18.2.0' },
       },
     }),
     /* new HtmlWebpackPlugin({

@@ -22,6 +22,17 @@ export const routes: Routes = [
             // {path: 'sign-up', loadChildren: () => import('app/modules/auth/sign-up/sign-up.routes')}
         ]
     },
+
+    // {
+    //     path: 'remote',
+    //     loadChildren: () =>
+    //         loadRemoteModule({
+    //             remoteName: 'reactRemote',
+    //             remoteEntry: 'http://localhost:8080/remoteEntry.js',
+    //             exposedModule: './Header', // Ruta del módulo expuesto en la app remota
+    //         }).then(m => m.RemoteModule),
+    // },
+
  /*    {
         path: 'remote',
         loadChildren: () =>
@@ -31,10 +42,10 @@ export const routes: Routes = [
                 exposedModule: './App'
             }).then(m => m.App),
     }, */
-    /*  {
-         path: 'remote', loadChildren: () => import ('remoteApp/App').then (m => m.default)
+    //  {
+    //      path: 'remote', loadChildren: () => import ('remoteApp/App').then (m => m.default)
  
-     }, */
+    //  },
 
 
     // 404 & Catch all
