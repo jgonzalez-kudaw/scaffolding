@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './module/main/home/home.component';
 import { loadRemoteModule } from '@angular-architects/module-federation';
+import { ReactWrapperComponent } from './module/main/react-wrapper/react-wrapper.component';
 
 export const routes: Routes = [
 
@@ -24,13 +25,25 @@ export const routes: Routes = [
     },
 
     // {
+    //     path: 'react',
+    //     component: ReactWrapperComponent,
+    //     data: {
+    //         type: 'script',
+    //         remoteEntry: 'http://localhost:8080/remoteEntry.js',
+    //         remoteName: 'reactRemote',
+    //         exposedModule: './Header',
+    //         elementName: 'Header',
+    //     } as ReactWrapperComponentOptions
+    // }
+
+    // {
     //     path: 'remote',
     //     loadChildren: () =>
     //         loadRemoteModule({
     //             remoteName: 'reactRemote',
     //             remoteEntry: 'http://localhost:8080/remoteEntry.js',
     //             exposedModule: './Header', // Ruta del módulo expuesto en la app remota
-    //         }).then(m => m.RemoteModule),
+    //         }).then(m => m.Header),
     // },
 
  /*    {

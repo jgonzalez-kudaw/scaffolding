@@ -1,5 +1,5 @@
 // src/declare.d.ts
-declare module 'remoteApp/Header' {
+declare module 'reactRemote/Header' {
     import * as React from 'react'; // Asegúrate de importar React
 
     const Header: React.ComponentType; // Declara Header como un componente de React
