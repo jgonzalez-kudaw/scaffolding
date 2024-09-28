@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ElementRef, ViewChild, ViewContainerRef } fro
 import { loadRemoteModule } from '@angular-architects/module-federation';
 import * as React from 'react';
 import { createRoot } from 'react-dom/client';
+import { CommonModule } from '@angular/common';
 
 interface HeroesComponent {
     title: string;
@@ -14,52 +15,54 @@ interface HeroesComponent {
     standalone: true,
     selector: 'app-react-wrapper',
     template: `
-      Render: Render: <br>
-<ng-container #heroesContainer></ng-container>
-<br>
---------
-<div #reactContainer></div>
+@if(remoteConectionRefused){
+    <div>Error de conexion</div>
+}
+    <div #reactContainer></div>
     `,
-    imports: [],
+    imports: [CommonModule],
 })
 export class ReactWrapperComponent implements AfterViewInit {
     @ViewChild('reactContainer', { static: true }) reactContainer!: ElementRef;
     @ViewChild('heroesContainer', { read: ViewContainerRef, static: true }) heroesContainer!: ViewContainerRef;
 
+    remoteConectionRefused: boolean = false;
+
     private root!: ReturnType<typeof createRoot>;
 
     constructor() {
         console.log('constructor react wrapper');
-
-       //  this.loadHeroes();
     }
-    
+
     async ngAfterViewInit(): Promise<void> {
-        const { default: Header } = await loadRemoteModule({
-            remoteName: 'reactRemote',
-            remoteEntry: 'http://localhost:8080/remoteEntry.js',
-            exposedModule: './Header',
-        });
-    
-        this.root = createRoot(this.reactContainer.nativeElement);
-        this.root.render(React.createElement(Header)); // Asegúrate de usar React.createElement si es un componente React
+        try {
+            // Configuracion para establecer conexion con 
+            const { default: Header } = await loadRemoteModule({
+                remoteName: 'reactRemote',
+                remoteEntry: 'http://localhost:8080/remoteEntry.js',
+                exposedModule: './Header',
+            });
+
+            if (!this.remoteConectionRefused) {
+                this.root = createRoot(this.reactContainer.nativeElement);
+                this.root.render(React.createElement(Header)); // Asegúrate de usar React.createElement si es un componente React
+            }
+        }
+        catch (error) {
+
+            console.log('errrrrrror')
+            console.log(error);
+
+            this.remoteConectionRefused = true;
+
+            // Capturar el error y manejarlo
+            console.error('Error cargando el remoteEntry.js', error);
+
+        }
     }
 
-    // async ngAfterViewInit(): Promise<void> {
-        // Aquí puedes cargar el componente React
-        // const { default: Header } = await loadRemoteModule({
-        //     remoteName: 'reactRemote',
-        //     remoteEntry: 'http://localhost:8080/remoteEntry.js',
-        //     exposedModule: './Header',
-        // });
-        
-        // Crear el root y renderizar el componente React
-        // this.root = createRoot(this.reactContainer.nativeElement);
-        // this.root.render(<Header />); // Asegúrate de usar la sintaxis JSX
-    // } 
-
-    // ngOnDestroy() {
-    //     // Limpiar el componente React cuando el componente Angular se destruya
-    //     this.root.unmount();
-    // }
+    ngOnDestroy() {
+        // Limpiar el componente React cuando el componente Angular se destruya
+        this.root.unmount();
+    }
 }

@@ -2,8 +2,8 @@ import React from "react";
 
 const Header = () => {
     return(
-        <div>
-            holaaaaa broder
+        <div style={{background: 'blue'}}>
+            Soy componente react
         </div>
     )
 }
